@@ -25,7 +25,7 @@ jobs:
 
       - name: Run Linting and Spell Check
         run: |
-          codespell .github/workflows/**/*.yml .github/workflows/**/*.yaml
+          find .github/workflows -name '*.yml' -o -name '*.yaml' | xargs codespell
           yamllint .github/workflows/**/*.yml .github/workflows/**/*.yaml --config-file .github/workflows/.yamllint
 
       - name: Run Actions-specific checks
