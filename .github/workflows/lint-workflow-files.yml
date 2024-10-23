@@ -22,7 +22,7 @@ jobs:
         run: pip install yamllint
 
       - name: Run YAML syntax check
-        run: yamllint .github/workflows/**/*.yml --config-file .yamllint  # Uses .yamllint for configuration
+        run: yamllint .github/workflows/**/*.yml --config-file .github/workflows/.yamllint # Uses .yamllint for configuration
 
       - name: Install codespell
         run: pip install codespell  # Install codespell for checking spelling errors
