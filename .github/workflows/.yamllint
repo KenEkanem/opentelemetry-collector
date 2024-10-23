@@ -1,0 +1,17 @@
+# .yamllint configuration file
+extends: default
+
+rules:
+  document-start: disable
+  line-length:
+    max: 120
+    level: warning
+  truthy:
+    level: warning
+  indentation:
+    spaces: 2
+  comments:
+    require-starting-space: true
+  trailing-spaces: enable
+  new-line-at-end-of-file: enable
+  brackets: enable
