@@ -2,10 +2,10 @@
 rules:
   document-start: disable
   line-length:
-    max: 120
+    max: 80
     level: warning
   truthy:
-    level: warning
+    level: error
   indentation:
     spaces: 2
   comments:
