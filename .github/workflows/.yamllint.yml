@@ -1,6 +1,4 @@
 # .yamllint configuration file
-extends: default
-
 rules:
   document-start: disable
   line-length:
