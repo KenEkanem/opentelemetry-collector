@@ -24,16 +24,22 @@ jobs:
           pip install yamllint
           pip install codespell
 
+      # Run the spell check first
       - name: Run Spell Check
         run: codespell .github/workflows/**/*.yml .github/workflows/**/*.yaml
+        continue-on-error: false  
+        
+      # Run YAML syntax check only if spelling check passes
       - name: Run YAML syntax check
+        if: success()
         run: yamllint .github/workflows/*.yml .github/workflows/*.yaml --config-file .github/workflows/.yamllint
 
+      # Run Actions-specific checks only if YAML linting passes
       - name: Run Actions-specific checks
+        if: success()
         uses: reviewdog/action-actionlint@v1
 
       - name: Reminder to Fix Errors
         if: failure()
-        run: echo "Please ensure all linting and spelling errors are addressed before merging the pull request."
+        run: echo "Please ensure all spelling and linting errors are addressed before merging the pull request."
 
-    continue-on-error: true
