@@ -8,13 +8,17 @@ on:
 
 jobs:
   validate-yaml:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - run: echo "Validating YAML and GitHub workflows in '${{ github.event.head_commit.message }}'"
+
+      - uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
@@ -24,13 +28,15 @@ jobs:
 
       - name: Validate YAML Syntax
         run: |
-          # Check syntax for any YAML files that changed in the PR
+          # Validate syntax for any YAML files that changed in the PR
           yamllint $(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '\.ya?ml$') || exit 1
 
       - name: Install actionlint
-        uses: rhysd/actionlint@v1
+        uses: docker://rhysd/actionlint:latest
 
       - name: Lint GitHub Workflow Files
         run: |
           # Lint only the GitHub workflow YAML files
-          actionlint -color
+          actionlint .github/workflows/*.yml .github/workflows/*.yaml
+
+
