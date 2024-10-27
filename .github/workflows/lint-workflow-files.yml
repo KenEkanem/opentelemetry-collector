@@ -14,13 +14,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install actionlint
+      - name: Lint GitHub Workflow YAML Files with Docker
         run: |
-          curl -sSL "https://github.com/rhysd/actionlint/releases/latest/download/actionlint_linux_amd64.zip" -o actionlint.zip
-          unzip actionlint.zip -d /usr/local/bin
-          rm actionlint.zip
-
-      - name: Lint GitHub Workflow YAML Files with actionlint
-        run: |
-          # Run actionlint on all files in .github/workflows
-          actionlint .github/workflows/*.yml .github/workflows/*.yaml
+          docker run --rm -v "${{ github.workspace }}:/repo" --workdir /repo rhysd/actionlint:latest -color .github/workflows/*.yml .github/workflows/*.yaml
