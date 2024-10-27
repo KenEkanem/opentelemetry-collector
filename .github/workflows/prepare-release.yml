@@ -20,7 +20,7 @@ on:
         description: Current version (beta, like 0.95.1). Don't include `v`.
 jobs:
   #validate-version format
-  validate-versions:
+  validate-version:
     runs-on: ubuntu-latest
 
     steps:

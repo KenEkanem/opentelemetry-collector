@@ -1,42 +1,24 @@
-name: Check YAML Files
+name: Lint GitHub Workflow YAML Files
 
 on:
   pull_request:
     paths:
-      - '**/*.yml'
-      - '**/*.yaml'
+      - '.github/workflows/*.yml'
+      - '.github/workflows/*.yaml'
 
 jobs:
-  validate-yaml:
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+  lint:
+    runs-on: ubuntu-latest
+
     steps:
-      - run: echo "Validating YAML and GitHub workflows in '${{ github.event.head_commit.message }}'"
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-
-      - name: Install yamllint
+      - name: Lint GitHub Workflow YAML Files with Docker
         run: |
-          pip install yamllint
+          docker run --rm -v "${{ github.workspace }}:/repo" --workdir /repo rhysd/actionlint:latest -color .github/workflows/*.yml .github/workflows/*.yaml
 
-      - name: Validate YAML Syntax
+      - name: Reminder to Address Linting Errors
+        if: failure()
         run: |
-          # Validate syntax for any YAML files that changed in the PR
-          yamllint $(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '\.ya?ml$') || exit 1
-
-      - name: Install actionlint
-        uses: docker://rhysd/actionlint:latest
-
-      - name: Lint GitHub Workflow Files
-        run: |
-          # Lint only the GitHub workflow YAML files
-          actionlint .github/workflows/*.yml .github/workflows/*.yaml
-
-
+          echo "⚠️ Please address all linting errors before merging this pull request."
