@@ -7,19 +7,37 @@ on:
       - '.github/workflows/*.yaml'
 
 jobs:
+
   lint:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
+  validate-yaml:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    
       - name: Install actionlint
         run: |
           curl -sSL "https://github.com/rhysd/actionlint/releases/latest/download/actionlint_linux_amd64.zip" -o actionlint.zip
           unzip actionlint.zip -d /usr/local/bin
           rm actionlint.zip
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
 
-      - name: Lint YAML files
+      - name: Install yamllint
         run: |
+          pip install yamllint
+
+      - name: Validate YAML Syntax
+        run: |
+          # Validate syntax for any YAML files that changed in the PR
+          yamllint $(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '\.ya?ml$') || exit 1
+
+      - name: Install actionlint
+        uses: docker://rhysd/actionlint:latest
           # Lint all yaml/yml files in the .github/workflows folder
           find .github/workflows -name '*.yml' -o -name '*.yaml' | xargs actionlint
+          # Lint only the GitHub workflow YAML files
+          actionlint .github/workflows/*.yml .github/workflows/*.yaml
