@@ -18,21 +18,43 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Lint Workflows with Docker
+        id: lint
         run: |
-            echo "Starting workflow linting..."
-            OUTPUT=$(docker run --rm \
+          echo "Starting workflow linting..."
+          
+          # Create temporary files for output and filtered errors
+          TEMP_OUTPUT=$(mktemp)
+          TEMP_FILTERED=$(mktemp)
+          
+          # Run actionlint and capture all output
+          docker run --rm \
             -v "${{ github.workspace }}:/repo" \
             --workdir /repo \
             rhysd/actionlint:${{ env.ACTIONLINT_VERSION }} \
-            -color .github/workflows/*.yml .github/workflows/*.yaml 2>&1 | grep -v \
-                -e 'label "ubuntu-22.04-arm" is unknown' \
-                -e 'label "windows-2025" is unknown' \
-                -e 'SC2086' || true)
+            -color .github/workflows/*.yml .github/workflows/*.yaml 2>&1 | tee "$TEMP_OUTPUT"
+          
+          # Filter out known warnings we want to ignore
+          grep -v \
+            -e 'label "ubuntu-22.04-arm" is unknown' \
+            -e 'label "windows-2025" is unknown' \
+            -e 'SC2086' \
+            "$TEMP_OUTPUT" > "$TEMP_FILTERED"
+          
+          # Check if any unfiltered errors remain
+          if [ -s "$TEMP_FILTERED" ]; then
+            echo "::error::Workflow errors found!"
+            cat "$TEMP_FILTERED"
+            echo "lint_status=failure" >> $GITHUB_OUTPUT
+            exit 1
+          else
+            echo "✓ Linting completed with no errors"
+            echo "lint_status=success" >> $GITHUB_OUTPUT
+          fi
+          
+          # Clean up temp files
+          rm -f "$TEMP_OUTPUT" "$TEMP_FILTERED"
 
-            if [ -z "$OUTPUT" ]; then
-                echo "✓ Linting completed with no errors"
-            else
-                echo "⚠️Error: Workflow errors found!"
-                echo "$OUTPUT"
-                exit 1
-            fi
+      - name: Show lint status
+        if: always()
+        run: |
+          echo "Final lint status: ${{ steps.lint.outputs.lint_status }}"
