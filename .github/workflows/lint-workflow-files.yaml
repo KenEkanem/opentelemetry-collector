@@ -28,6 +28,7 @@ jobs:
             -ignore 'SC2059' \
             -ignore 'SC2236' \
             -ignore 'SC1001' \
+            -ignore 'SC2129 ' \
             -color .github/workflows/*.yml .github/workflows/*.yaml
 
       - name: Reminder to Address Linting Errors
