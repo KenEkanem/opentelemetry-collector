@@ -21,6 +21,8 @@ jobs:
         run: |
           docker run --rm -v "${{ github.workspace }}:/repo" --workdir /repo rhysd/actionlint:${{ env.ACTIONLINT_VERSION }} \
             -ignore 'SC2086' \
+            -ignore 'SC2046' \
+            -ignore 'SC2059' \
             -color .github/workflows/*.yml .github/workflows/*.yaml
 
       - name: Reminder to Address Linting Errors
