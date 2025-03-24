@@ -17,6 +17,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Pre-pull Docker Image
+        run: docker pull rhysd/actionlint:${{ env.ACTIONLINT_VERSION }}
+
       - name: Lint GitHub Workflow YAML Files with Docker
         run: |
           docker run --rm -v "${{ github.workspace }}:/repo" --workdir /repo rhysd/actionlint:${{ env.ACTIONLINT_VERSION }} \
@@ -31,7 +34,8 @@ jobs:
         if: failure()
         run: |
           echo "⚠️ Please address all linting errors before merging this pull request."
+
       - name: All linting checks passed
         if: success()
         run: |
-            echo "✅ All linting checks passed."
+          echo "✅ All linting checks passed."
