@@ -1,0 +1,38 @@
+name: Lint GitHub Workflow YAML Files
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/*.yml'
+      - '.github/workflows/*.yaml'
+
+env:
+  ACTIONLINT_VERSION: "1.7.3"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Lint Workflows with Docker
+        run: |
+            echo "Starting workflow linting..."
+            OUTPUT=$(docker run --rm \
+            -v "${{ github.workspace }}:/repo" \
+            --workdir /repo \
+            rhysd/actionlint:${{ env.ACTIONLINT_VERSION }} \
+            -color .github/workflows/*.yml .github/workflows/*.yaml 2>&1 | grep -v \
+                -e 'label "ubuntu-22.04-arm" is unknown' \
+                -e 'label "windows-2025" is unknown' \
+                -e 'SC2086' || true)
+
+            if [ -z "$OUTPUT" ]; then
+                echo "✓ Linting completed with no errors"
+            else
+                echo "⚠️Error: Workflow errors found!"
+                echo "$OUTPUT"
+                exit 1
+            fi
