@@ -31,3 +31,7 @@ jobs:
         if: failure()
         run: |
           echo "⚠️ Please address all linting errors before merging this pull request."
+      - name: All linting checks passed
+        if: success()
+        run: |
+            echo "✅ All linting checks passed."
