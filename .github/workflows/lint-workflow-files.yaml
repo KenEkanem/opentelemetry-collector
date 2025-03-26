@@ -6,23 +6,22 @@ on:
       - '.github/workflows/*.yml'
       - '.github/workflows/*.yaml'
 
-env:
-  ACTIONLINT_VERSION: "1.7.3"
-
 jobs:
   lint:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Pre-pull Docker Image
-        run: docker pull rhysd/actionlint:${{ env.ACTIONLINT_VERSION }}
-
-      - name: Lint GitHub Workflow YAML Files with Docker
+      - name: Install tools # Will install actionlint from go.mod
+        run: make install-tools     
+      
+      - name: Check actionlint version
+        run: actionlint -version
+      
+      - name: Run actionlint
         run: |
-          docker run --rm -v "${{ github.workspace }}:/repo" --workdir /repo rhysd/actionlint:${{ env.ACTIONLINT_VERSION }} \
+          actionlint \
             -ignore 'SC2086' \
             -ignore 'SC2046' \
             -ignore 'SC2059' \
@@ -31,12 +30,10 @@ jobs:
             -ignore 'SC2129' \
             -color .github/workflows/*.yml .github/workflows/*.yaml
 
-      - name: Reminder to Address Linting Errors
+      - name: Reminder on failure
         if: failure()
-        run: |
-          echo "⚠️ Please address all linting errors before merging this pull request."
+        run: echo "⚠️ Please fix linting errors before merging."
 
-      - name: All linting checks passed
+      - name: Success message
         if: success()
-        run: |
-          echo "✅ All linting checks passed."
+        run: echo "✅ All workflow files are valid."
