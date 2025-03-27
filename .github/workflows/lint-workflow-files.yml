@@ -1,0 +1,64 @@
+name: Lint GitHub Workflow YAML Files
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/*.yml'
+      - '.github/workflows/*.yaml'
+      - '.github/actionlint.yaml'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '~1.24'
+          cache: true
+
+      # # Install shellcheck (for bash/sh linting)
+      # - name: Install ShellCheck
+      #   run: sudo apt-get update && sudo apt-get install -y shellcheck
+
+      # # Install pyflakes (for Python linting)
+      # - name: Install Pyflakes
+      #   run: pip install pyflakes
+
+      # Install actionlint
+      - name: Run actionlint via Makefile
+        run: |
+          cd internal/tools
+          go mod tidy
+          go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.3
+          make install-tools
+          
+      - name: Lint GitHub Workflow YAML Files
+        run: |
+          # Change to the workspace directory first
+          cd "${{ github.workspace }}"
+          
+          # Get list of workflow files
+          files=(.github/workflows/*.yml .github/workflows/*.yaml)
+          
+          # Only run actionlint if there are workflow files
+          if [ ${#files[@]} -gt 0 ]; then
+            actionlint -config-file ".github/actionlint.yaml" -color "${files[@]}"
+          else
+            echo "No workflow files found to lint."
+          fi
+      
+
+      - name: Reminder to Address Linting Errors
+        if: failure()
+        run: |
+          echo "⚠️ Please address all linting errors before merging this pull request."
+
+      - name: All linting checks passed
+        if: success()
+        run: |
+          echo "✅ All linting checks passed."

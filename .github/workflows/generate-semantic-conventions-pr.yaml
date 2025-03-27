@@ -105,5 +105,4 @@ jobs:
           url=$(gh pr create --title "$message" \
                              --body "$body" \
                              --base main)
-
           pull_request_number=${url//*\//}
