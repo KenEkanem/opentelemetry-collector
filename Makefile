@@ -466,9 +466,9 @@ gengithub: $(GITHUBGEN) generate-codeowners generate-gh-issue-templates
 gendistributions: $(GITHUBGEN)
 	$(GITHUBGEN) distributions
 
-	.PHONY: actionlint
-actionlint:
-	@echo "Installing actionlint..."
-	@cd internal/tools && \
-		go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.3
-	@echo "Actionlint installed to $$(go env GOPATH)/bin"	
+# 	.PHONY: actionlint
+# actionlint:
+# 	@echo "Installing actionlint..."
+# 	@cd internal/tools && \
+# 		go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.3
+# 	@echo "Actionlint installed to $$(go env GOPATH)/bin"	
