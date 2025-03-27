@@ -18,9 +18,11 @@ config-variables: null
 
 paths:
   .github/workflows/**/*.{yml,yaml}:
-      -ignore 'SC2086' \
-      -ignore 'SC2046' \
-      -ignore 'SC2059' \
-      -ignore 'SC2236' \
-      -ignore 'SC1001' \
-      -ignore 'SC2129' \
+    ignore:
+       - 'shellcheck reported issue in this script: SC2086:'
+       - 'shellcheck reported issue in this script: SC2046:'
+       - 'shellcheck reported issue in this script: SC2236:'
+       - 'shellcheck reported issue in this script: SC1001:'
+       - 'shellcheck reported issue in this script: SC2059:'
+       - 'shellcheck reported issue in this script: SC2129:'
+       - 'shellcheck reported issue in this script: SC2034:'
