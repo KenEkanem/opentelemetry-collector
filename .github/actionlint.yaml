@@ -15,13 +15,12 @@ config-variables: null
 # "ignore" is an array of regular expression patterns. Matched error messages
 # are ignored. This is similar to the "-ignore" command line option.
 paths:
-    # Apply to all workflow files in this directory
-        "*.yml":
-        "*.yaml":
-        ignore:
-        - 'SC2086'  # Double quote to prevent globbing
-        - 'SC2046'  # Quote to prevent word splitting  
-        - 'SC2059'  # Don't use variables in printf
-        - 'SC2236'  # Use -n instead of ! -z
-        - 'SC1001'  # Escape character warning
-        - 'SC2129'  # Combine redirects
+  "*.yml":
+  "*.yaml":
+    ignore:
+      - 'SC2086'  # Double quote to prevent globbing
+      - 'SC2046'  # Quote to prevent word splitting
+      - 'SC2059'  # Don't use variables in printf
+      - 'SC2236'  # Use -n instead of ! -z
+      - 'SC1001'  # Escape character warning
+      - 'SC2129'  # Combine redirects
