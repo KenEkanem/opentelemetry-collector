@@ -37,10 +37,21 @@ jobs:
           go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.3
           make install-tools
           
-
       - name: Lint GitHub Workflow YAML Files
         run: |
-          actionlint -config-file "${{ github.workspace }}/.github/actionlint.yaml" -color "${{ github.workspace }}/.github/workflows/*.yml" "${{ github.workspace }}/.github/workflows/*.yaml"
+          # Change to the workspace directory first
+          cd "${{ github.workspace }}"
+          
+          # Get list of workflow files
+          files=(.github/workflows/*.yml .github/workflows/*.yaml)
+          
+          # Only run actionlint if there are workflow files
+          if [ ${#files[@]} -gt 0 ]; then
+            actionlint -config-file ".github/actionlint.yaml" -color "${files[@]}"
+          else
+            echo "No workflow files found to lint."
+          fi
+      
 
       - name: Reminder to Address Linting Errors
         if: failure()
