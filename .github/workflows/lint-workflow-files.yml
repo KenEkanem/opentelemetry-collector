@@ -24,7 +24,7 @@ jobs:
         run: |
           cd internal/tools
           go mod tidy
-          make make actionlint
+          make actionlint
 
       - name: Lint GitHub Workflow YAML Files
         run: |
