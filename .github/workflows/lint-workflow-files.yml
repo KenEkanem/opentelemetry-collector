@@ -21,7 +21,11 @@ jobs:
           cache: true
 
       - name: Install tools
-        run: make install-tools
+        run: |
+          cd internal/tools
+          go mod tidy
+          go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.3
+          make install-tools
 
       - name: Lint GitHub Workflow YAML Files
         run: |
