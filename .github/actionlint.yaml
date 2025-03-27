@@ -22,13 +22,22 @@ paths:
   .github/workflows/**/*.{yml,yaml}:
     # List of regular expressions to filter errors by the error messages.
     ignore:
-      - 'shellcheck reported issue in this script: SC2086:.+'  # Double quote to prevent globbing
-      - 'shellcheck reported issue in this script: SC2046:.+'  # Quote to prevent word splitting
-      - 'shellcheck reported issue in this script: SC2059:.+'  # Don't use variables in printf
-      - 'shellcheck reported issue in this script: SC2236:.+'  # Use -n instead of ! -z
-      - 'shellcheck reported issue in this script: SC1001:.+'  # Escape character warning
-      - 'shellcheck reported issue in this script: SC2129:.+'  # Combine redirects]
-
+      - 'shellcheck reported issue in this script: SC2086:info:1:4: Double quote to prevent globbing and word splitting'  # Double quote to prevent globbing
+      - 'shellcheck reported issue in this script: SC2046:warning:1:30: Quote this to prevent word splitting:.+'  # Quote to prevent word splitting
+      - 'shellcheck reported issue in this script: SC2059:info:6:16: Don''t use variables in the printf format string. Use printf ''..%s..'' "$foo"'
+      
+      # Don't use variables in printf
+      - 'shellcheck reported issue in this script: SC2236:style:17:7: Use -n instead of ! -z:.+'  # Use -n instead of ! -z
+      - 'shellcheck reported issue in this script: SC1001:info:1:36: This \\w will be a regular ''w'' in this context'  # Escape character warning
+      - 'shellcheck reported issue in this script: SC1001:info:2:18: This \\S will be a regular ''S'' in this context'
+      - 'shellcheck reported issue in this script: SC1001:info:2:25: This \\C will be a regular ''C'' in this context'
+      - 'shellcheck reported issue in this script: SC1001:info:2:32: This \\E will be a regular ''E'' in this context'
+      - 'shellcheck reported issue in this script: SC1001:info:2:39: This \\o will be a regular ''o'' in this context'
+      - 'shellcheck reported issue in this script: SC1001:info:2:46: This \\A will be a regular ''A'' in this context'
+      
+      - 'shellcheck reported issue in this script: SC2129:style:2:1: Consider using { cmd1; cmd2; } >> file instead of individual redirects'  # Combine redirects]
+      - 'shellcheck reported issue in this script: SC2129:style:7:1: Consider using { cmd1; cmd2; } >> file instead of individual redirects'  # Combine redirects
+      - 'shellcheck reported issue in this script: SC2129:style:21:1: Consider using { cmd1; cmd2; } >> file instead of individual redirects'  # Combine redirects
   .github/workflows/generate-semantic-conventions-pr.yaml:
       ignore:
         - 'shellcheck reported issue in this script: SC2034:warning:23:1: pull_request_number appears unused. Verify use (or export if used externally)'
