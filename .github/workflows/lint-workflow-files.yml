@@ -20,12 +20,11 @@ jobs:
           go-version: '~1.24'
           cache: true
 
-      - name: Install tools
+      - name: Run actionlint via Makefile
         run: |
           cd internal/tools
           go mod tidy
-          go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.3
-          make install-tools
+          make make actionlint
 
       - name: Lint GitHub Workflow YAML Files
         run: |
