@@ -18,9 +18,9 @@ paths:
   "*.yml":
   "*.yaml":
     ignore:
-      - 'SC2086'  # Double quote to prevent globbing
-      - 'SC2046'  # Quote to prevent word splitting
-      - 'SC2059'  # Don't use variables in printf
-      - 'SC2236'  # Use -n instead of ! -z
-      - 'SC1001'  # Escape character warning
-      - 'SC2129'  # Combine redirects
+      - 'shellcheck reported issue in this script: SC2086:.+'  # Double quote to prevent globbing
+      - 'shellcheck reported issue in this script: SC2046:.+'  # Quote to prevent word splitting
+      - 'shellcheck reported issue in this script: SC2059:.+'  # Don't use variables in printf
+      - 'shellcheck reported issue in this script: SC2236:.+'  # Use -n instead of ! -z
+      - 'shellcheck reported issue in this script: SC1001:.+'  # Escape character warning
+      - 'shellcheck reported issue in this script: SC2129:.+'  # Combine redirects
