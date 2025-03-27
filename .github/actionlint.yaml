@@ -27,4 +27,8 @@ paths:
       - 'shellcheck reported issue in this script: SC2059:.+'  # Don't use variables in printf
       - 'shellcheck reported issue in this script: SC2236:.+'  # Use -n instead of ! -z
       - 'shellcheck reported issue in this script: SC1001:.+'  # Escape character warning
-      - 'shellcheck reported issue in this script: SC2129:.+'  # Combine redirects
+      - 'shellcheck reported issue in this script: SC2129:.+'  # Combine redirects]
+
+  .github/workflows/generate-semantic-conventions-pr.yaml:
+      ignore:
+        - 'the runner of ".+" action is too old to run on GitHub Actions'
