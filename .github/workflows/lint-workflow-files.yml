@@ -35,6 +35,7 @@ jobs:
           go mod tidy
           go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.3
           make install-tools
+          cd ../..
 
       - name: Lint GitHub Workflow YAML Files
         run: |
