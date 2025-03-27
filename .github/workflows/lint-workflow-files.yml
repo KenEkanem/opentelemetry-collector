@@ -42,7 +42,7 @@ jobs:
           pwd
           cd ../..
           ls ./.github
-          actionlint -config-file ./.github/actionlint.yaml -color .github/workflows/*.yml .github/workflows/*.yaml
+          actionlint -config-file "${{ github.workspace }}/.github/actionlint.yaml" -color "${{ github.workspace }}/.github/workflows/*.yml" "${{ github.workspace }}/.github/workflows/*.yaml"
 
       - name: Reminder to Address Linting Errors
         if: failure()
