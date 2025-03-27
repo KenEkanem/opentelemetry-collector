@@ -11,6 +11,7 @@ require (
 	github.com/google/addlicense v1.1.1
 	github.com/jcchavezs/porto v0.7.0
 	github.com/pavius/impi v0.0.3
+	github.com/rhysd/actionlint v1.7.3
 	go.opentelemetry.io/build-tools/checkfile v0.20.0
 	go.opentelemetry.io/build-tools/chloggen v0.20.0
 	go.opentelemetry.io/build-tools/crosslink v0.20.0

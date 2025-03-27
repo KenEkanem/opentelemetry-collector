@@ -6,9 +6,6 @@ on:
       - '.github/workflows/*.yml'
       - '.github/workflows/*.yaml'
 
-env:
-  ACTIONLINT_VERSION: "1.7.3"
-
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -17,12 +14,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Pre-pull Docker Image
-        run: docker pull rhysd/actionlint:${{ env.ACTIONLINT_VERSION }}
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '~1.24'
+          cache: true
 
-      - name: Lint GitHub Workflow YAML Files with Docker
+      - name: Install tools
+        run: make install-tools
+
+      - name: Lint GitHub Workflow YAML Files
         run: |
-          docker run --rm -v "${{ github.workspace }}:/repo" --workdir /repo rhysd/actionlint:${{ env.ACTIONLINT_VERSION }} \
+          actionlint \
             -ignore 'SC2086' \
             -ignore 'SC2046' \
             -ignore 'SC2059' \
