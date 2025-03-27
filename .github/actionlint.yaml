@@ -31,4 +31,4 @@ paths:
 
   .github/workflows/generate-semantic-conventions-pr.yaml:
       ignore:
-        - 'the runner of ".+" action is too old to run on GitHub Actions'
+        - 'shellcheck reported issue in this script: SC2034:warning:23:1: pull_request_number appears unused. Verify use (or export if used externally)'
