@@ -41,7 +41,8 @@ jobs:
         run: |
           pwd
           cd ../..
-          actionlint -config-file .github/actionlint.yaml -color .github/workflows/*.yml .github/workflows/*.yaml
+          ls ./.github/actionlint.yaml
+          actionlint -config-file ./.github/actionlint.yaml -color .github/workflows/*.yml .github/workflows/*.yaml
 
       - name: Reminder to Address Linting Errors
         if: failure()
