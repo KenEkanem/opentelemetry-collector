@@ -19,5 +19,10 @@ config-variables: null
 paths:
   .github/workflows/**/*.{yml,yaml}:
     ignore:
-      # ShellCheck warnings to ignore
-      - '^shellcheck reported issue in this script: SC(2086|2046|2236|1001|2059|2129|2034):'
+       - 'shellcheck reported issue in this script: SC2086:'
+       - 'shellcheck reported issue in this script: SC2046:'
+       - 'shellcheck reported issue in this script: SC2236:'
+       - 'shellcheck reported issue in this script: SC1001:'
+       - 'shellcheck reported issue in this script: SC2059:'
+       - 'shellcheck reported issue in this script: SC2129:'
+       - 'shellcheck reported issue in this script: SC2034:'
