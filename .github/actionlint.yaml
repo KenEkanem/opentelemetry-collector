@@ -14,9 +14,13 @@ config-variables: null
 #
 # "ignore" is an array of regular expression patterns. Matched error messages
 # are ignored. This is similar to the "-ignore" command line option.
+# Path-specific configurations.
+
 paths:
-  "*.yml":
-  "*.yaml":
+  # Glob pattern relative to the repository root for matching files. The path separator is always '/'.
+  # This example configures any YAML file under the '.github/workflows/' directory.
+  .github/workflows/**/*.{yml,yaml}:
+    # List of regular expressions to filter errors by the error messages.
     ignore:
       - 'shellcheck reported issue in this script: SC2086:.+'  # Double quote to prevent globbing
       - 'shellcheck reported issue in this script: SC2046:.+'  # Quote to prevent word splitting
